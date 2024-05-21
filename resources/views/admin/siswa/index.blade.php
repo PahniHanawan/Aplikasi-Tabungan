@@ -57,9 +57,9 @@
                             <tbody>
                                 @foreach ($siswa as $data)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $loop->iteration }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $data->nama_siswa }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $data->nama_siswa }}</td>
+                                        <td>
                                             Rp.{{ number_format($data->saldo, 0, ',', '.') }}</td>
                                         <td>
                                             <form action="{{ route('siswa.destroy', $data->id) }}" method="POST">

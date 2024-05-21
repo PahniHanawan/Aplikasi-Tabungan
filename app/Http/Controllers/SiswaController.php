@@ -4,75 +4,108 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use Illuminate\Support\Facades\Session;
 
 class SiswaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar siswa.
      */
     public function index()
     {
         $title = 'List Siswa';
         $siswa = Siswa::all();
-        return view("admin.siswa.index", compact("siswa", 'title'));
+        return view('admin.siswa.index', compact('siswa', 'title'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Menampilkan formulir untuk membuat siswa baru.
      */
     public function create()
     {
-        $siswa = Siswa::all();
-        $title = "Tambah Data";
-        return view('admin.siswa.create', compact('title', 'siswa'));
+        $title = 'Tambah Data';
+        return view('admin.siswa.create', compact('title'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan siswa baru ke dalam penyimpanan.
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_siswa' => 'required|string|max:255',
+            'saldo' => 'required|numeric',
+        ]);
+
         try {
             $siswa = new Siswa();
             $siswa->nama_siswa = $request->nama_siswa;
             $siswa->saldo = $request->saldo;
             $siswa->save();
-            \Session::flash('sukses', 'Data Berhasil Di Tambah');
+            Session::flash('sukses', 'Data Berhasil Ditambah');
         } catch (\Exception $e) {
-            \Session::flash('gagal', $e->getMessage());
+            Session::flash('gagal', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+
         return redirect()->route('siswa.index');
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail siswa tertentu.
      */
     public function show(string $id)
     {
-        //
+        $siswa = Siswa::findOrFail($id);
+        $title = 'Detail Siswa';
+        return view('admin.siswa.show', compact('siswa', 'title'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Menampilkan formulir untuk mengedit siswa tertentu.
      */
     public function edit(string $id)
     {
-        //
+        $siswa = Siswa::findOrFail($id);
+        $title = 'Edit Data';
+        return view('admin.siswa.edit', compact('siswa', 'title'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui siswa tertentu di dalam penyimpanan.
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nama_siswa' => 'required|string|max:255',
+            'saldo' => 'required|numeric',
+        ]);
+
+        try {
+            $siswa = Siswa::findOrFail($id);
+            $siswa->nama_siswa = $request->nama_siswa;
+            $siswa->saldo = $request->saldo;
+            $siswa->save();
+            Session::flash('sukses', 'Data Berhasil Diperbarui');
+        } catch (\Exception $e) {
+            Session::flash('gagal', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+
+        return redirect()->route('siswa.index');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus siswa tertentu dari penyimpanan.
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $siswa = Siswa::findOrFail($id);
+            $siswa->delete();
+            Session::flash('sukses', 'Data Berhasil Dihapus');
+        } catch (\Exception $e) {
+            Session::flash('gagal', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+
+        return redirect()->route('siswa.index');
     }
 }

@@ -1,4 +1,5 @@
 @extends('layouts.master')
+
 @section('breadcrumbs')
     <div class="content-header">
         <div class="container-fluid">
@@ -16,6 +17,7 @@
         </div><!-- /.container-fluid -->
     </div>
 @endsection
+
 @section('content')
     <div class="container-fluid">
         <div class="row">
@@ -25,9 +27,9 @@
                         <form action="{{ route('users.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="name">Name : </label>
+                                <label for="name">Name:</label>
                                 <input type="text" name="name"
-                                    class="form-control @error('name') is-invalid @enderror " placeholder="Masukkan Nama"
+                                    class="form-control @error('name') is-invalid @enderror" placeholder="Masukkan Nama"
                                     required>
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -36,7 +38,7 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="email">Email : </label>
+                                <label for="email">Email:</label>
                                 <input type="email" name="email"
                                     class="form-control @error('email') is-invalid @enderror" placeholder="Masukkan Email"
                                     required>
@@ -47,7 +49,7 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="pass">Password : </i></i></label>
+                                <label for="pass">Password:</label>
                                 <input type="password" name="password"
                                     class="form-control @error('password') is-invalid @enderror"
                                     placeholder="Masukkan Password" required>
